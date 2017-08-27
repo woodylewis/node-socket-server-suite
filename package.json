@@ -1,0 +1,37 @@
+{
+  "name": "cross_stream-server-suite",
+  "version": "1.0.0",
+  "description": "",
+  "main": "cross_stream-server-suite",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start-upstream": "node cross_stream-upstream-server.js > /apps/log/cross_stream_node/cross_stream-upstream-out.log 2> /apps/log/cross_stream-upstream-error.log &",
+    "start-downstream": "node cross_stream-downstream-server.js > /apps/log/cross_stream_node/cross_stream-downstream-out.log 2> /apps/log/cross_stream-downstream-error.log &"
+  },
+  "author": "WL",
+  "license": "MIT",
+  "devDependencies": {
+    "bluebird": "^3.4.7",
+    "config": "^1.26.1",
+    "body-parser": "^1.17.2",
+    "cors": "^2.8.4",
+    "express": "^4.14.0",
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-jshint": "^0.11.2",
+    "grunt-contrib-watch": "^0.6.1",
+    "jshint": "^2.8.0",
+    "request": "^2.75.0",
+    "rx": "^4.1.0",
+    "rx-node": "^1.0.2",
+    "shelljs": "^0.2.6",
+    "socket.io": "^1.4.8",
+    "socket.io-client": "^1.4.8",
+    "socketio-jwt": "^4.5.0",
+    "split": "^1.0.0",
+    "time-grunt": "^1.3.0",
+    "winston": "^2.3.1"
+  },
+  "dependencies": {}
+}
