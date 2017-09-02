@@ -28,7 +28,7 @@ var logger = require('./wls-logger.js')('wls-downstream'),
 	upstreamConnect,
 	upstreamSubscriber,
 	downstreamConnect,
-	downtreamSubscriber,
+	downstreamSubscriber,
 	adminConnect,
 	adminSubscriber;
 
@@ -95,13 +95,14 @@ function initEndpoint(socket) {
 }
 
 function manageMessageBus() {
-	downtreamSubscriber = downstreamConnect
+	downstreamSubscriber = downstreamConnect
 	.subscribe(function(obj) {
 		// Pass endpoint object to message bus  
 		downstream_channel.getMessage(obj);
 		admin_channel_io.emit('admin_topic', obj);
 	});
 }
+
 //-------------------
 
 //-- Outer functions --

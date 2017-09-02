@@ -4,35 +4,35 @@
         "name" : "DEV",
         "jwt_secret" : "placeholder",
         "upstream_host" : "localhost",
-        "upstream_port" : "3000",
-        "downstream_port" : "3001",
-        "upstream_server": "http://localhost:3000",
-        "admin_server": "http://localhost:3002",
-        "admin_socket_port" : "3002",
-        "admin_http_port" : "3003"
+        "upstream_port" : "3001",
+        "downstream_port" : "3002",
+        "upstream_server": "http://localhost:3001",
+        "admin_server": "http://localhost:3003",
+        "admin_socket_port" : "3003",
+        "admin_http_port" : "3004"
     },
     "stage" :
     {
         "name" : "STAGE",
         "jwt_secret" : "placeholder",
         "upstream_host" : "localhost",
-        "upstream_port" : "3000",
-        "downstream_port" : "3001",
-        "upstream_server": "http://localhost:3000",
-        "admin_server": "http://localhost:3002",
-        "admin_socket_port" : "3002",
-        "admin_http_port" : "3003"
+        "upstream_port" : "3001",
+        "downstream_port" : "3002",
+        "upstream_server": "http://localhost:3001",
+        "admin_server": "http://localhost:3003",
+        "admin_socket_port" : "3003",
+        "admin_http_port" : "3004"
     },
     "prod" :
     {
         "name" : "PROD",
         "jwt_secret" : "placeholder",
         "upstream_host" : "localhost",
-        "upstream_port" : "3000",
-        "downstream_port" : "3001",
-        "upstream_server": "http://localhost:3000",
-        "admin_server": "http://localhost:3002",
-        "admin_socket_port" : "3002",
-        "admin_http_port" : "3003"
+        "upstream_port" : "3001",
+        "downstream_port" : "3002",
+        "upstream_server": "http://localhost:3001",
+        "admin_server": "http://localhost:3003",
+        "admin_socket_port" : "3003",
+        "admin_http_port" : "3004"
     }
 }

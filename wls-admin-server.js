@@ -60,6 +60,7 @@ var logger = require('./wls-logger.js')('wls-admin'),
     
     adminSubscriber = adminConnect
 	.subscribe(function(obj) {  
+        outLogger.info('ADMIN RECEIVED TOPIC FROM DOWNSTREAM ', msg);
 		admin_channel.getMessage(obj);
         //console.log('ADMIN SUBSCRIBER ' + obj.action + ' - ' + obj.topic);
 	});
