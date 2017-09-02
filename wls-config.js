@@ -1,6 +1,8 @@
 //-- specify the config file and location for the 'config' module --
 process.env.NODE_ENV = "wls-node-config";
 process.env.NODE_CONFIG_DIR = __dirname + '/wls_node_config/';
+//-- following line avoids strict mode error - https://github.com/lorenwest/node-config/wiki/Strict-Mode
+process.env.NODE_APP_INSTANCE = 'wls-node-config';
 
 var config = require('config'),
     winston = require('winston'),

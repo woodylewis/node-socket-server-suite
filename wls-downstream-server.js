@@ -14,7 +14,7 @@ var logger = require('./wls-logger.js')('wls-downstream'),
 	upstream_channel_io = require('socket.io-client')(config.upstream_server, {
 		forceNew: true
 	}),
-	admin_channel_io = require('socket.io-client')(config.upstream_server, {
+	admin_channel_io = require('socket.io-client')(config.admin_server, {
 		forceNew: true
 	}),
 	downstream_channel_io = require('socket.io')(http).listen(config.downstream_port),
@@ -28,13 +28,15 @@ var logger = require('./wls-logger.js')('wls-downstream'),
 	upstreamConnect,
 	upstreamSubscriber,
 	downstreamConnect,
-	downtreamSubscriber;
+	downtreamSubscriber,
+	adminConnect,
+	adminSubscriber;
 
-	//-- Listening to UI -- 
-	outLogger.info('START DOWNSTREAM - listening on ' + config.downstream_port);
-    outLogger.info('ENVIRONMENT = ' + process.env.ENV);
-	outLogger.info('DOWNSTREAM CLI PARAMETER ' + process.argv[2]);
-	//errLogger.error('TEST ERROR FROM DOWNSTREAM ');
+//-- Listening to UI -- 
+outLogger.info('START DOWNSTREAM - listening on ' + config.downstream_port);
+outLogger.info('ENVIRONMENT = ' + process.env.ENV);
+outLogger.info('DOWNSTREAM CLI PARAMETER ' + process.argv[2]);
+//errLogger.error('TEST ERROR FROM DOWNSTREAM ');
 	
 // uncomment to send test message to upstream server
 outLogger.info('DOWNSTREAM SENDS <TEST FROM DOWNSTREAM>');
@@ -65,15 +67,24 @@ upstreamSubscriber = upstreamConnect
 	}
 });
 
-//-- Downstream
-admin_channel_io.on('test', function(msg) {
-	console.log('RECEIVED FROM ADMIN ', msg);
-	admin_channel_io.emit('test', 'MESSAGE FROM DOWNSTREAM');
+//-- Admin
+adminConnect = Rx.Observable.create(function(observer) {
+	admin_channel_io.on('test', function(msg) {
+		console.log('RECEIVED FROM ADMIN ', msg);
+		admin_channel_io.emit('test', 'MESSAGE FROM DOWNSTREAM');
+		observer.onNext(msg);
+	});
+
 });
 
+adminSubscriber = adminConnect
+.subscribe(function(obj) {
+	console.log('DOWNSTREAM SUBSCRIBES TO ADMIN ', obj);
+});
 //-- Listening to UI -- 
 console.log('START DOWNSTREAM - listening on ' + config.downstream_port);
 
+//-- Inner functions --
 function initEndpoint(socket) {
 	var slot = label + s;
 	socket.join(slot);
@@ -91,7 +102,9 @@ function manageMessageBus() {
 		admin_channel_io.emit('admin_topic', obj);
 	});
 }
+//-------------------
 
+//-- Outer functions --
 function auth_loop() {
 	downstreamConnect = Rx.Observable.create(function(observer) {   
 		downstream_channel_io.sockets
@@ -123,7 +136,7 @@ function no_auth_loop() {
 	manageMessageBus();
 }
 
-// The inner functionality in either loop  
+// The inner functions 
 function inner_socket_loop(socket, observer) {
 	socket.on('subscribe', function(msg){
 			try {

@@ -46,23 +46,15 @@ var logger = require('./wls-logger.js')('wls-admin'),
     //-- Connection to downstream server 
     outLogger.info('START ADMIN'); 
     outLogger.info('listening on socket ' + config.admin_socket_port);
-    admin_channel.publishAdmin('TEST FROM ADMIN'); 
+    //admin_channel.publishAdmin('TEST FROM ADMIN'); 
     
 
 	adminConnect = Rx.Observable.create(function(observer) {   
         admin_channel_io.sockets.on('connection', function(socket) {
             outLogger.info('ADMIN - connection on '  + config.admin_socket_port);
             // respond to test message from downstream server
+            inner_socket_loop(socket, observer);
             admin_channel.publishAdmin('MESSAGE FROM ADMIN');
-            
-            socket.on('test', function(msg) {
-                outLogger.info('RECEIVED FROM DOWNSTREAM ', msg);
-            });
-
-            socket.on('admin_topic', function(msg) {
-			    observer.onNext(msg);
-            });
-            
         });
     });
     
@@ -72,6 +64,25 @@ var logger = require('./wls-logger.js')('wls-admin'),
         //console.log('ADMIN SUBSCRIBER ' + obj.action + ' - ' + obj.topic);
 	});
 
+    function inner_socket_loop(socket, observer) {
+        socket.on('test', function(msg) {
+            try {
+                outLogger.info('RECEIVED TEST MESSAGE FROM DOWNSTREAM ', msg);
+                observer.onNext(msg);
+            } catch(e) {
+                errLogger.info('ERROR RECEIVING TEST MESSAGE');
+            }
+        });
+
+        socket.on('admin_topic', function(msg) {
+            try {
+                observer.onNext(msg);
+            } catch(e) {
+                errLogger.info('ERROR RECEIVING ADMIN TOPIC');
+            }
+        });
+    }
+
     app.use('/', router);
     app.listen(config.admin_http_port);
-    outLogger.info('LISTENING FOR HTTP ENDPOINT REQUESTS' + config.admin_http_port);
+    outLogger.info('LISTENING FOR HTTP ENDPOINT REQUESTS ' + config.admin_http_port);
